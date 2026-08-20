@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>杨许煊的个人网站</title>
+<style>
+/* ========== Reset & Base ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --text-muted: #a0a0a0;
+  --line: #e5e5e5;
+  --line-light: #f0f0f0;
+  --accent: #2563eb;
+  --accent-light: #dbeafe;
+  --gold: #c9a84c;
+  --gold-light: #fdf6e3;
+  --radius: 8px;
+  --nav-height: 56px;
+  --sidebar-width: 180px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ========== Cover Page ========== */
+.cover {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: all;
+}
+.cover.hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+.cover-title {
+  font-size: 2.6rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.cover-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  margin-bottom: 3rem;
+}
+.cover-scroll-hint {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  animation: float 2s ease-in-out infinite;
+}
+.cover-arrow {
+  width: 24px; height: 24px;
+  border-right: 1px solid var(--text-muted);
+  border-bottom: 1px solid var(--text-muted);
+  transform: rotate(45deg);
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* ========== Decorative Lines (Background) ========== */
+.bg-lines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.04;
+}
+.bg-lines svg { width: 100%; height: 100%; }
+
+/* ========== Navigation ========== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-height);
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+  opacity: 0; transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+.nav.visible {
+  opacity: 1; transform: translateY(0);
+  pointer-events: all;
+}
+.nav-brand {
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 0; list-style: none; }
+.nav-links li { position: relative; }
+.nav-links a {
+  display: block; padding: 0.5rem 1.2rem;
+  font-size: 0.9rem; color: var(--text-secondary);
+  text-decoration: none; cursor: pointer;
+  transition: color 0.2s ease;
+  letter-spacing: 0.03em;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a.active { color: var(--text); font-weight: 500; }
+.nav-indicator {
+  position: absolute; bottom: 0; height: 2px;
+  background: var(--accent);
+  transition: left 0.3s ease, width 0.3s ease;
+  border-radius: 1px;
+}
+
+/* ========== Main Content Wrapper ========== */
+.main-wrapper {
+  position: relative; z-index: 1;
+  padding-top: var(--nav-height);
+}
+
+/* ========== Page Sections (Home, High School, University) ========== */
+.page {
+  display: none;
+  min-height: calc(100vh - var(--nav-height));
+  animation: fadeSlideIn 0.4s ease;
+}
+.page.active { display: block; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== Home Page ========== */
+.home {
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  min-height: calc(100vh - var(--nav-height));
+  padding: 4rem 2rem;
+}
+.home.active { display: flex; }
+.home-intro { text-align: center; margin-bottom: 4rem; }
+.home-name {
+  font-size: 2.8rem; font-weight: 300;
+  letter-spacing: 0.08em; margin-bottom: 0.75rem;
+}
+.home-desc {
+  font-size: 1.05rem; color: var(--text-secondary);
+  font-weight: 300; letter-spacing: 0.04em;
+  max-width: 480px; line-height: 1.8;
+}
+.home-cards {
+  display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
+}
+.home-card {
+  display: flex; flex-direction: column; align-items: center;
+  width: 240px; padding: 2.5rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none; color: var(--text);
+}
+.home-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  border-color: var(--accent);
+}
+.home-card-icon {
+  width: 48px; height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.25rem;
+  font-size: 1.2rem; color: var(--accent);
+  transition: all 0.3s ease;
+}
+.home-card:hover .home-card-icon {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+.home-card-title {
+  font-size: 1.15rem; font-weight: 500;
+  letter-spacing: 0.04em; margin-bottom: 0.4rem;
+}
+.home-card-desc {
+  font-size: 0.85rem; color: var(--text-muted);
+  text-align: center; line-height: 1.6;
+}
+
+/* ========== Content Pages (High School & University) ========== */
+.content-page {
+  display: flex;
+  min-height: calc(100vh - var(--nav-height));
+}
+.content-page .sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  padding: 3rem 0 2rem 2rem;
+  border-right: 1px solid var(--line-light);
+}
+.content-page .sidebar-title {
+  font-size: 1.3rem; font-weight: 500;
+  letter-spacing: 0.04em; margin-bottom: 1.5rem;
+}
+.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav a {
+  display: block; padding: 0.45rem 0.8rem;
+  font-size: 0.88rem; color: var(--text-secondary);
+  text-decoration: none; cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.03em;
+}
+.sidebar-nav a:hover { color: var(--text); background: var(--line-light); }
+.sidebar-nav a.active {
+  color: var(--accent); font-weight: 500;
+  background: var(--accent-light);
+}
+
+.content-page .content-area {
+  flex: 1; padding: 3rem 3rem 4rem;
+  max-width: 800px;
+}
+.content-area .section { display: none; animation: fadeSlideIn 0.35s ease; }
+.content-area .section.active { display: block; }
+.section-title {
+  font-size: 1.5rem; font-weight: 500;
+  letter-spacing: 0.04em; margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.section-desc {
+  font-size: 0.95rem; color: var(--text-secondary);
+  margin-bottom: 2rem; line-height: 1.8;
+}
+
+/* ========== Placeholder Items ========== */
+.placeholder-item {
+  display: flex; gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--line-light);
+}
+.placeholder-item:last-child { border-bottom: none; }
+.placeholder-img {
+  width: 120px; height: 80px;
+  background: var(--line-light);
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+.placeholder-content h4 {
+  font-size: 0.95rem; font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.placeholder-content p {
+  font-size: 0.85rem; color: var(--text-muted);
+  line-height: 1.6;
+}
+.placeholder-tag {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--line-light);
+  border-radius: 3px;
+  margin-top: 0.5rem;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .cover-title { font-size: 1.8rem; }
+  .home-name { font-size: 2rem; }
+  .home-cards { flex-direction: column; align-items: center; }
+  .content-page { flex-direction: column; }
+  .content-page .sidebar {
+    width: 100%; border-right: none; border-bottom: 1px solid var(--line-light);
+    padding: 1.5rem 1rem;
+    display: flex; align-items: center; gap: 1rem;
+    overflow-x: auto;
+  }
+  .content-page .sidebar-title { margin-bottom: 0; font-size: 1rem; white-space: nowrap; }
+  .sidebar-nav { flex-direction: row; flex-wrap: nowrap; }
+  .sidebar-nav a { white-space: nowrap; font-size: 0.8rem; padding: 0.35rem 0.6rem; }
+  .content-page .content-area { padding: 1.5rem 1rem; }
+  .nav { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== Cover Page ========== -->
+<div class="cover" id="cover">
+  <h1 class="cover-title">杨许煊的个人网站</h1>
+  <p class="cover-subtitle">记录成长 · 分享经历</p>
+  <div class="cover-scroll-hint">
+    <span>向下滚动</span>
+    <div class="cover-arrow"></div>
+  </div>
+</div>
+
+<!-- ========== Background Decorative Lines ========== -->
+<div class="bg-lines">
+  <svg viewBox="0 0 1200 800" preserveAspectRatio="none">
+    <line x1="0" y1="200" x2="1200" y2="200" stroke="#2563eb" stroke-width="1" />
+    <line x1="0" y1="600" x2="1200" y2="600" stroke="#2563eb" stroke-width="1" />
+    <line x1="300" y1="0" x2="300" y2="800" stroke="#2563eb" stroke-width="1" />
+    <line x1="900" y1="0" x2="900" y2="800" stroke="#2563eb" stroke-width="1" />
+    <circle cx="300" cy="200" r="3" fill="#2563eb" />
+    <circle cx="900" cy="600" r="3" fill="#2563eb" />
+    <circle cx="600" cy="400" r="2" fill="#c9a84c" />
+  </svg>
+</div>
+
+<!-- ========== Navigation ========== -->
+<nav class="nav" id="nav">
+  <a class="nav-brand" data-page="home">杨许煊</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a data-page="home" class="active">首页</a></li>
+    <li><a data-page="highschool">高中</a></li>
+    <li><a data-page="university">大学</a></li>
+    <li class="nav-indicator" id="navIndicator"></li>
+  </ul>
+</nav>
+
+<!-- ========== Main Content ========== -->
+<div class="main-wrapper" id="mainWrapper">
+
+  <!-- ===== Home Page ===== -->
+  <div class="page home active" id="page-home">
+    <div class="home-intro">
+      <h1 class="home-name">杨许煊</h1>
+      <p class="home-desc">待补充个人简介 —— 一句话介绍自己，或一段简短的自我介绍文字。</p>
+    </div>
+    <div class="home-cards">
+      <div class="home-card" data-page="highschool">
+        <div class="home-card-icon">HS</div>
+        <div class="home-card-title">高中</div>
+        <div class="home-card-desc">高考学习 · 学科竞赛<br>足球 · 校园生活</div>
+      </div>
+      <div class="home-card" data-page="university">
+        <div class="home-card-icon">UNI</div>
+        <div class="home-card-title">大学</div>
+        <div class="home-card-desc">实习 · 科研 · 竞赛 · 足球<br>志愿者 · 英语 · 更多</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== High School Page ===== -->
+  <div class="page" id="page-highschool">
+    <div class="content-page">
+      <aside class="sidebar">
+        <div class="sidebar-title">高中</div>
+        <ul class="sidebar-nav" data-page="highschool">
+          <li><a data-section="hs-study" class="active">高考学习</a></li>
+          <li><a data-section="hs-competition">学科竞赛</a></li>
+          <li><a data-section="hs-football">足球</a></li>
+          <li><a data-section="hs-life">校园生活</a></li>
+        </ul>
+      </aside>
+      <main class="content-area">
+        <!-- 高考学习 -->
+        <div class="section active" id="hs-study">
+          <h2 class="section-title">高考学习</h2>
+          <p class="section-desc">待补充 —— 高考成绩、备考经历、学习方法等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例经历标题</h4>
+              <p>待补充详细描述。这里将会放你的高考备考故事、成绩提升经历等。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例经历标题</h4>
+              <p>待补充详细描述。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 学科竞赛 -->
+        <div class="section" id="hs-competition">
+          <h2 class="section-title">学科竞赛</h2>
+          <p class="section-desc">待补充 —— 参加过的学科竞赛、获奖情况等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例竞赛名称</h4>
+              <p>待补充 —— 竞赛内容、获奖等级、参赛时间等。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 足球 -->
+        <div class="section" id="hs-football">
+          <h2 class="section-title">足球</h2>
+          <p class="section-desc">待补充 —— 高中足球经历、比赛、队友等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例足球经历</h4>
+              <p>待补充详细描述。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 校园生活 -->
+        <div class="section" id="hs-life">
+          <h2 class="section-title">校园生活</h2>
+          <p class="section-desc">待补充 —— 高中生活点滴、校园碎片。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例生活片段</h4>
+              <p>待补充详细描述。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== University Page ===== -->
+  <div class="page" id="page-university">
+    <div class="content-page">
+      <aside class="sidebar">
+        <div class="sidebar-title">大学</div>
+        <ul class="sidebar-nav" data-page="university">
+          <li><a data-section="uni-internship" class="active">实习经历</a></li>
+          <li><a data-section="uni-research">科研/论文</a></li>
+          <li><a data-section="uni-grades">学科成绩</a></li>
+          <li><a data-section="uni-football">足球</a></li>
+          <li><a data-section="uni-competition">竞赛</a></li>
+          <li><a data-section="uni-volunteer">志愿者</a></li>
+          <li><a data-section="uni-life">校园生活</a></li>
+          <li><a data-section="uni-english">英语</a></li>
+        </ul>
+      </aside>
+      <main class="content-area">
+        <!-- 实习经历 -->
+        <div class="section active" id="uni-internship">
+          <h2 class="section-title">实习经历</h2>
+          <p class="section-desc">待补充 —— 实习公司、岗位、工作内容、收获等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例实习经历</h4>
+              <p>待补充 —— 公司名称、实习时间、工作内容描述。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 科研/论文 -->
+        <div class="section" id="uni-research">
+          <h2 class="section-title">科研/论文</h2>
+          <p class="section-desc">待补充 —— 课题组经历、研究方向、论文发表等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例科研项目</h4>
+              <p>待补充 —— 课题组名称、研究方向、参与项目、论文成果等。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 学科成绩 -->
+        <div class="section" id="uni-grades">
+          <h2 class="section-title">学科成绩</h2>
+          <p class="section-desc">待补充 —— 大学 GPA、核心课程成绩、学业荣誉等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例学业记录</h4>
+              <p>待补充 —— GPA、排名、奖学金、核心课程等。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 足球 -->
+        <div class="section" id="uni-football">
+          <h2 class="section-title">足球</h2>
+          <p class="section-desc">待补充 —— 大学足球经历、院队/校队、比赛等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例足球经历</h4>
+              <p>待补充详细描述。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 竞赛 -->
+        <div class="section" id="uni-competition">
+          <h2 class="section-title">竞赛</h2>
+          <p class="section-desc">待补充 —— 大学参加的各类竞赛、获奖情况。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例竞赛名称</h4>
+              <p>待补充 —— 竞赛内容、团队、获奖等级等。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 志愿者 -->
+        <div class="section" id="uni-volunteer">
+          <h2 class="section-title">志愿者</h2>
+          <p class="section-desc">待补充 —— 志愿活动、社会服务经历等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例志愿活动</h4>
+              <p>待补充 —— 活动名称、时间、内容、收获等。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 校园生活 -->
+        <div class="section" id="uni-life">
+          <h2 class="section-title">校园生活</h2>
+          <p class="section-desc">待补充 —— 大学生活碎片、校园点滴。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例生活片段</h4>
+              <p>待补充详细描述。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 英语 -->
+        <div class="section" id="uni-english">
+          <h2 class="section-title">英语</h2>
+          <p class="section-desc">待补充 —— 雅思备考、英语能力提升、交换申请等。</p>
+          <div class="placeholder-item">
+            <div class="placeholder-img">待补充图片</div>
+            <div class="placeholder-content">
+              <h4>示例英语学习记录</h4>
+              <p>待补充 —— 雅思成绩/目标、备考经历、英语相关活动等。</p>
+              <span class="placeholder-tag">待补充</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ========== State ==========
+const state = {
+  currentPage: 'home',
+  coverRevealed: false,
+  highschoolSection: 'hs-study',
+  universitySection: 'uni-internship',
+};
+
+// ========== DOM refs ==========
+const cover = document.getElementById('cover');
+const nav = document.getElementById('nav');
+const navIndicator = document.getElementById('navIndicator');
+const mainWrapper = document.getElementById('mainWrapper');
+
+// ========== Cover: scroll to reveal ==========
+let coverScrollLock = false;
+function handleCoverScroll(e) {
+  if (coverScrollLock) return;
+  if (state.coverRevealed) return;
+
+  const delta = e.deltaY || e.wheelDelta || 0;
+  if (delta > 0) {
+    coverScrollLock = true;
+    revealCover();
+    setTimeout(() => { coverScrollLock = false; }, 800);
+  }
+}
+
+function revealCover() {
+  state.coverRevealed = true;
+  cover.classList.add('hidden');
+  nav.classList.add('visible');
+  document.body.style.overflow = '';
+  // Show home page
+  navigateTo('home');
+  updateNavIndicator();
+}
+
+// Touch support for cover
+let touchStartY = 0;
+cover.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+cover.addEventListener('touchmove', (e) => {
+  if (state.coverRevealed) return;
+  const delta = touchStartY - e.touches[0].clientY;
+  if (delta > 30) revealCover();
+}, { passive: true });
+
+window.addEventListener('wheel', handleCoverScroll, { passive: true });
+
+// ========== Navigation ==========
+function navigateTo(page) {
+  state.currentPage = page;
+
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+  // Show target page
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+
+  // Update nav links
+  document.querySelectorAll('#navLinks a[data-page]').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+
+  updateNavIndicator();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Nav link clicks
+document.querySelectorAll('#navLinks a[data-page]').forEach(link => {
+  link.addEventListener('click', () => navigateTo(link.dataset.page));
+});
+
+// Nav brand click
+document.querySelector('.nav-brand').addEventListener('click', () => navigateTo('home'));
+
+// Home card clicks
+document.querySelectorAll('.home-card[data-page]').forEach(card => {
+  card.addEventListener('click', () => navigateTo(card.dataset.page));
+});
+
+// Nav indicator positioning
+function updateNavIndicator() {
+  const activeLink = document.querySelector('#navLinks a.active');
+  if (!activeLink) return;
+  navIndicator.style.left = activeLink.offsetLeft + 'px';
+  navIndicator.style.width = activeLink.offsetWidth + 'px';
+}
+
+window.addEventListener('resize', updateNavIndicator);
+
+// ========== Section Switching (Sidebar) ==========
+document.querySelectorAll('.sidebar-nav').forEach(nav => {
+  nav.addEventListener('click', (e) => {
+    const link = e.target.closest('a[data-section]');
+    if (!link) return;
+
+    const page = nav.dataset.page;
+    const section = link.dataset.section;
+
+    // Update state
+    if (page === 'highschool') state.highschoolSection = section;
+    if (page === 'university') state.universitySection = section;
+
+    // Deactivate all links in this sidebar
+    nav.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+
+    // Switch section content
+    const pageEl = document.getElementById('page-' + page);
+    if (!pageEl) return;
+
+    pageEl.querySelectorAll('.content-area .section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(section);
+    if (target) target.classList.add('active');
+  });
+});
+
+// ========== Initial state ==========
+document.body.style.overflow = 'hidden';
+
+// If user navigates directly without cover (e.g. page refresh scrolled down), show content
+if (window.scrollY > 100) {
+  revealCover();
+}
+</script>
+</body>
+</html>
