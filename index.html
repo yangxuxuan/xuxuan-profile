@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>杨许煊的个人网站</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ========== Reset & Base ========== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +31,8 @@ html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-  background: var(--bg);
+  background: linear-gradient(180deg, #ffffff 0%, #dbe9f7 35%, #bcd7ee 100%);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
@@ -44,6 +46,26 @@ body {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   transition: opacity 0.6s ease, transform 0.6s ease;
   pointer-events: all;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url('images/cover.png');
+  background-size: 130% auto;
+  background-position: 25% 30%;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+.cover::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+  z-index: 1;
+}
+.cover > * {
+  position: relative;
+  z-index: 2;
 }
 .cover.hidden {
   opacity: 0;
@@ -51,17 +73,19 @@ body {
   pointer-events: none;
 }
 .cover-title {
-  font-size: 2.6rem;
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  color: var(--text);
+  font-family: 'Dancing Script', cursive;
+  font-size: 5.5rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #000;
   margin-bottom: 0.5rem;
 }
 .cover-subtitle {
-  font-size: 1rem;
-  color: var(--text-muted);
-  font-weight: 300;
-  letter-spacing: 0.04em;
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #000;
+  letter-spacing: 0.02em;
   margin-bottom: 3rem;
 }
 .cover-scroll-hint {
@@ -114,23 +138,6 @@ body {
   cursor: pointer;
   text-decoration: none;
 }
-.nav-links { display: flex; gap: 0; list-style: none; }
-.nav-links li { position: relative; }
-.nav-links a {
-  display: block; padding: 0.5rem 1.2rem;
-  font-size: 0.9rem; color: var(--text-secondary);
-  text-decoration: none; cursor: pointer;
-  transition: color 0.2s ease;
-  letter-spacing: 0.03em;
-}
-.nav-links a:hover { color: var(--text); }
-.nav-links a.active { color: var(--text); font-weight: 500; }
-.nav-indicator {
-  position: absolute; bottom: 0; height: 2px;
-  background: var(--accent);
-  transition: left 0.3s ease, width 0.3s ease;
-  border-radius: 1px;
-}
 
 /* ========== Main Content Wrapper ========== */
 .main-wrapper {
@@ -171,40 +178,83 @@ body {
 .home-cards {
   display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;
 }
+
+/* 首页逐级显现动画 */
+.home.revealing .home-name { animation: homeRise 0.8s ease backwards; animation-delay: 0.6s; }
+.home.revealing .home-desc { animation: homeRise 0.8s ease backwards; animation-delay: 0.9s; }
+.home.revealing .home-card { animation: homeRise 0.8s ease backwards; }
+.home.revealing .home-card:nth-child(1) { animation-delay: 1.2s; }
+.home.revealing .home-card:nth-child(2) { animation-delay: 1.35s; }
+
+@keyframes homeRise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 .home-card {
   display: flex; flex-direction: column; align-items: center;
   width: 240px; padding: 2.5rem 2rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
   text-decoration: none; color: var(--text);
+  position: relative;
+  overflow: hidden;
+}
+/* 全息扫描线 */
+.home-card::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: -60%;
+  height: 60%;
+  background: linear-gradient(180deg, transparent, rgba(37, 99, 235, 0.18), transparent);
+  pointer-events: none;
+  opacity: 0;
+}
+.home-card:hover::before {
+  animation: scan 1.1s ease forwards;
+}
+@keyframes scan {
+  0%   { top: -60%; opacity: 1; }
+  100% { top: 110%; opacity: 1; }
 }
 .home-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-  border-color: var(--accent);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.18);
+  border-color: rgba(37, 99, 235, 0.25);
+  background: rgba(255, 255, 255, 0.85);
 }
 .home-card-icon {
-  width: 48px; height: 48px;
-  border: 1px solid var(--line);
+  width: 56px; height: 56px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 1.25rem;
-  font-size: 1.2rem; color: var(--accent);
-  transition: all 0.3s ease;
+  font-size: 1.1rem; font-weight: 600; color: #fff;
+  transition: all 0.35s ease;
+}
+/* 高中卡片图标：蓝色 */
+.home-card:nth-child(1) .home-card-icon {
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+/* 大学卡片图标：绿色 */
+.home-card:nth-child(2) .home-card-icon {
+  background: linear-gradient(135deg, #34d399, #059669);
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
 }
 .home-card:hover .home-card-icon {
-  background: var(--accent-light);
-  border-color: var(--accent);
+  transform: scale(1.08);
 }
 .home-card-title {
   font-size: 1.15rem; font-weight: 500;
   letter-spacing: 0.04em; margin-bottom: 0.4rem;
 }
 .home-card-desc {
-  font-size: 0.85rem; color: var(--text-muted);
+  font-size: 0.85rem; color: var(--text-secondary);
   text-align: center; line-height: 1.6;
 }
 
@@ -218,6 +268,21 @@ body {
   flex-shrink: 0;
   padding: 3rem 0 2rem 2rem;
   border-right: 1px solid var(--line-light);
+}
+.back-home {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.85rem; color: var(--text-secondary);
+  cursor: pointer; text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
+}
+.back-home:hover { color: var(--accent); }
+.back-arrow {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-left: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
 }
 .content-page .sidebar-title {
   font-size: 1.3rem; font-weight: 500;
@@ -313,8 +378,8 @@ body {
 
 <!-- ========== Cover Page ========== -->
 <div class="cover" id="cover">
-  <h1 class="cover-title">杨许煊的个人网站</h1>
-  <p class="cover-subtitle">记录成长 · 分享经历</p>
+  <h1 class="cover-title">Y.X.X</h1>
+  <p class="cover-subtitle" style="margin-bottom: 0.5rem;">Kvaratz.77</p>
   <div class="cover-scroll-hint">
     <span>向下滚动</span>
     <div class="cover-arrow"></div>
@@ -337,12 +402,6 @@ body {
 <!-- ========== Navigation ========== -->
 <nav class="nav" id="nav">
   <a class="nav-brand" data-page="home">杨许煊</a>
-  <ul class="nav-links" id="navLinks">
-    <li><a data-page="home" class="active">首页</a></li>
-    <li><a data-page="highschool">高中</a></li>
-    <li><a data-page="university">大学</a></li>
-    <li class="nav-indicator" id="navIndicator"></li>
-  </ul>
 </nav>
 
 <!-- ========== Main Content ========== -->
@@ -352,7 +411,7 @@ body {
   <div class="page home active" id="page-home">
     <div class="home-intro">
       <h1 class="home-name">杨许煊</h1>
-      <p class="home-desc">待补充个人简介 —— 一句话介绍自己，或一段简短的自我介绍文字。</p>
+      <p class="home-desc">无边落木萧萧下 克瓦拉茨赫利亚</p>
     </div>
     <div class="home-cards">
       <div class="home-card" data-page="highschool">
@@ -372,6 +431,7 @@ body {
   <div class="page" id="page-highschool">
     <div class="content-page">
       <aside class="sidebar">
+        <a class="back-home" data-page="home"><span class="back-arrow"></span>返回首页</a>
         <div class="sidebar-title">高中</div>
         <ul class="sidebar-nav" data-page="highschool">
           <li><a data-section="hs-study" class="active">高考学习</a></li>
@@ -452,6 +512,7 @@ body {
   <div class="page" id="page-university">
     <div class="content-page">
       <aside class="sidebar">
+        <a class="back-home" data-page="home"><span class="back-arrow"></span>返回首页</a>
         <div class="sidebar-title">大学</div>
         <ul class="sidebar-nav" data-page="university">
           <li><a data-section="uni-internship" class="active">实习经历</a></li>
@@ -594,31 +655,47 @@ const state = {
 // ========== DOM refs ==========
 const cover = document.getElementById('cover');
 const nav = document.getElementById('nav');
-const navIndicator = document.getElementById('navIndicator');
 const mainWrapper = document.getElementById('mainWrapper');
 
-// ========== Cover: scroll to reveal ==========
+// ========== Cover: bidirectional scroll ==========
 let coverScrollLock = false;
+
 function handleCoverScroll(e) {
   if (coverScrollLock) return;
-  if (state.coverRevealed) return;
 
-  const delta = e.deltaY || e.wheelDelta || 0;
-  if (delta > 0) {
+  // Cover visible + scroll down → reveal
+  if (!state.coverRevealed && e.deltaY > 0) {
     coverScrollLock = true;
-    revealCover();
+    hideCover();
     setTimeout(() => { coverScrollLock = false; }, 800);
+    return;
+  }
+
+  // Cover hidden + at page top + on home page + scroll up → show cover
+  if (state.coverRevealed && e.deltaY < 0 && window.scrollY === 0 && state.currentPage === 'home') {
+    coverScrollLock = true;
+    showCover();
+    setTimeout(() => { coverScrollLock = false; }, 800);
+    return;
   }
 }
 
-function revealCover() {
+function hideCover() {
   state.coverRevealed = true;
   cover.classList.add('hidden');
   nav.classList.add('visible');
   document.body.style.overflow = '';
-  // Show home page
   navigateTo('home');
-  updateNavIndicator();
+}
+
+function showCover() {
+  state.coverRevealed = false;
+  cover.classList.remove('hidden');
+  nav.classList.remove('visible');
+  document.body.style.overflow = 'hidden';
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  window.scrollTo({ top: 0 });
 }
 
 // Touch support for cover
@@ -629,7 +706,7 @@ cover.addEventListener('touchstart', (e) => {
 cover.addEventListener('touchmove', (e) => {
   if (state.coverRevealed) return;
   const delta = touchStartY - e.touches[0].clientY;
-  if (delta > 30) revealCover();
+  if (delta > 30) hideCover();
 }, { passive: true });
 
 window.addEventListener('wheel', handleCoverScroll, { passive: true });
@@ -645,37 +722,29 @@ function navigateTo(page) {
   const target = document.getElementById('page-' + page);
   if (target) target.classList.add('active');
 
-  // Update nav links
-  document.querySelectorAll('#navLinks a[data-page]').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === page);
-  });
+  // Replay home reveal animation
+  if (page === 'home') {
+    const home = document.getElementById('page-home');
+    home.classList.remove('revealing');
+    void home.offsetWidth; // 强制重排，让动画能重新触发
+    home.classList.add('revealing');
+  }
 
-  updateNavIndicator();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Nav link clicks
-document.querySelectorAll('#navLinks a[data-page]').forEach(link => {
-  link.addEventListener('click', () => navigateTo(link.dataset.page));
-});
-
 // Nav brand click
 document.querySelector('.nav-brand').addEventListener('click', () => navigateTo('home'));
+
+// Back-home buttons click
+document.querySelectorAll('.back-home').forEach(btn => {
+  btn.addEventListener('click', () => navigateTo('home'));
+});
 
 // Home card clicks
 document.querySelectorAll('.home-card[data-page]').forEach(card => {
   card.addEventListener('click', () => navigateTo(card.dataset.page));
 });
-
-// Nav indicator positioning
-function updateNavIndicator() {
-  const activeLink = document.querySelector('#navLinks a.active');
-  if (!activeLink) return;
-  navIndicator.style.left = activeLink.offsetLeft + 'px';
-  navIndicator.style.width = activeLink.offsetWidth + 'px';
-}
-
-window.addEventListener('resize', updateNavIndicator);
 
 // ========== Section Switching (Sidebar) ==========
 document.querySelectorAll('.sidebar-nav').forEach(nav => {
@@ -709,7 +778,7 @@ document.body.style.overflow = 'hidden';
 
 // If user navigates directly without cover (e.g. page refresh scrolled down), show content
 if (window.scrollY > 100) {
-  revealCover();
+  hideCover();
 }
 </script>
 </body>
