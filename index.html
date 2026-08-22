@@ -23,7 +23,6 @@
   --gold-light: #fdf6e3;
   --radius: 8px;
   --nav-height: 56px;
-  --sidebar-width: 180px;
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -90,15 +89,15 @@ body {
 }
 .cover-scroll-hint {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: var(--text-muted);
+  color: #000;
   font-size: 0.8rem;
   letter-spacing: 0.06em;
   animation: float 2s ease-in-out infinite;
 }
 .cover-arrow {
   width: 24px; height: 24px;
-  border-right: 1px solid var(--text-muted);
-  border-bottom: 1px solid var(--text-muted);
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
   transform: rotate(45deg);
 }
 @keyframes float {
@@ -260,23 +259,29 @@ body {
 
 /* ========== Content Pages (High School & University) ========== */
 .content-page {
-  display: flex;
   min-height: calc(100vh - var(--nav-height));
+  padding: 3rem 2rem 4rem;
+  max-width: 1080px;
+  margin: 0 auto;
 }
-.content-page .sidebar {
-  width: var(--sidebar-width);
-  flex-shrink: 0;
-  padding: 3rem 0 2rem 2rem;
-  border-right: 1px solid var(--line-light);
+
+.view-header {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 2rem;
 }
-.back-home {
+.view-title {
+  font-size: 1.5rem; font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.view-back {
   display: inline-flex; align-items: center; gap: 0.4rem;
   font-size: 0.85rem; color: var(--text-secondary);
-  cursor: pointer; text-decoration: none;
-  margin-bottom: 1.5rem;
-  transition: color 0.2s ease;
+  background: none; border: none; cursor: pointer;
+  padding: 0.4rem 0.7rem; border-radius: 6px;
+  letter-spacing: 0.03em;
+  transition: all 0.2s ease;
 }
-.back-home:hover { color: var(--accent); }
+.view-back:hover { color: var(--accent); background: var(--accent-light); }
 .back-arrow {
   display: inline-block;
   width: 8px; height: 8px;
@@ -284,74 +289,108 @@ body {
   border-bottom: 1.5px solid currentColor;
   transform: rotate(45deg);
 }
-.content-page .sidebar-title {
-  font-size: 1.3rem; font-weight: 500;
-  letter-spacing: 0.04em; margin-bottom: 1.5rem;
-}
-.sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; }
-.sidebar-nav a {
-  display: block; padding: 0.45rem 0.8rem;
-  font-size: 0.88rem; color: var(--text-secondary);
-  text-decoration: none; cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  letter-spacing: 0.03em;
-}
-.sidebar-nav a:hover { color: var(--text); background: var(--line-light); }
-.sidebar-nav a.active {
-  color: var(--accent); font-weight: 500;
-  background: var(--accent-light);
-}
 
-.content-page .content-area {
-  flex: 1; padding: 3rem 3rem 4rem;
-  max-width: 800px;
+/* ===== 第一级：板块方框 ===== */
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
 }
-.content-area .section { display: none; animation: fadeSlideIn 0.35s ease; }
-.content-area .section.active { display: block; }
-.section-title {
-  font-size: 1.5rem; font-weight: 500;
-  letter-spacing: 0.04em; margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--line);
+.section-grid.grid-2x2 { grid-template-columns: repeat(2, 1fr); }
+.section-box {
+  display: flex; flex-direction: column; justify-content: center;
+  min-height: 132px;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text);
+  font-family: inherit;
+  transition: all 0.35s ease;
 }
-.section-desc {
-  font-size: 0.95rem; color: var(--text-secondary);
-  margin-bottom: 2rem; line-height: 1.8;
+.section-box:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.18);
+  border-color: rgba(37, 99, 235, 0.25);
+  background: rgba(255, 255, 255, 0.85);
 }
-
-/* ========== Placeholder Items ========== */
-.placeholder-item {
-  display: flex; gap: 1.5rem;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--line-light);
+.section-box-name {
+  font-size: 1.15rem; font-weight: 500;
+  letter-spacing: 0.04em; margin-bottom: 0.4rem;
 }
-.placeholder-item:last-child { border-bottom: none; }
-.placeholder-img {
-  width: 120px; height: 80px;
-  background: var(--line-light);
-  border-radius: 4px;
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-}
-.placeholder-content h4 {
-  font-size: 0.95rem; font-weight: 500;
-  margin-bottom: 0.3rem;
-}
-.placeholder-content p {
-  font-size: 0.85rem; color: var(--text-muted);
+.section-box-desc {
+  font-size: 0.85rem; color: var(--text-secondary);
   line-height: 1.6;
 }
-.placeholder-tag {
-  display: inline-block;
-  padding: 0.15rem 0.6rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
+
+/* ===== 第二级：图片网格 ===== */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.photo-card {
+  display: flex; flex-direction: column;
+  border: none; border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+  font-family: inherit;
+}
+.photo-thumb {
+  aspect-ratio: 1 / 1;
+  width: 100%;
   background: var(--line-light);
-  border-radius: 3px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.photo-card:hover .photo-thumb { transform: scale(1.03); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14); }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-caption {
   margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #000;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* ===== 第三级：图文详情 ===== */
+.event-detail { max-width: 760px; }
+.event-image {
+  width: 100%; aspect-ratio: 16 / 10;
+  background: var(--line-light); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 0.85rem;
+  margin-bottom: 1.5rem; overflow: hidden;
+}
+.event-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.event-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.event-images .event-image {
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  margin-bottom: 0;
+}
+.event-title {
+  font-size: 1.4rem; font-weight: 500;
+  letter-spacing: 0.03em; margin-bottom: 0.75rem;
+}
+.event-desc {
+  font-size: 0.95rem; color: var(--text-secondary);
+  line-height: 1.9;
 }
 
 /* ========== Responsive ========== */
@@ -359,17 +398,9 @@ body {
   .cover-title { font-size: 1.8rem; }
   .home-name { font-size: 2rem; }
   .home-cards { flex-direction: column; align-items: center; }
-  .content-page { flex-direction: column; }
-  .content-page .sidebar {
-    width: 100%; border-right: none; border-bottom: 1px solid var(--line-light);
-    padding: 1.5rem 1rem;
-    display: flex; align-items: center; gap: 1rem;
-    overflow-x: auto;
-  }
-  .content-page .sidebar-title { margin-bottom: 0; font-size: 1rem; white-space: nowrap; }
-  .sidebar-nav { flex-direction: row; flex-wrap: nowrap; }
-  .sidebar-nav a { white-space: nowrap; font-size: 0.8rem; padding: 0.35rem 0.6rem; }
-  .content-page .content-area { padding: 1.5rem 1rem; }
+  .content-page { padding: 2rem 1rem 3rem; }
+  .section-grid { grid-template-columns: repeat(2, 1fr); }
+  .photo-grid { grid-template-columns: repeat(2, 1fr); }
   .nav { padding: 0 1rem; }
 }
 </style>
@@ -428,218 +459,10 @@ body {
   </div>
 
   <!-- ===== High School Page ===== -->
-  <div class="page" id="page-highschool">
-    <div class="content-page">
-      <aside class="sidebar">
-        <a class="back-home" data-page="home"><span class="back-arrow"></span>返回首页</a>
-        <div class="sidebar-title">高中</div>
-        <ul class="sidebar-nav" data-page="highschool">
-          <li><a data-section="hs-study" class="active">高考学习</a></li>
-          <li><a data-section="hs-competition">学科竞赛</a></li>
-          <li><a data-section="hs-football">足球</a></li>
-          <li><a data-section="hs-life">校园生活</a></li>
-        </ul>
-      </aside>
-      <main class="content-area">
-        <!-- 高考学习 -->
-        <div class="section active" id="hs-study">
-          <h2 class="section-title">高考学习</h2>
-          <p class="section-desc">待补充 —— 高考成绩、备考经历、学习方法等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例经历标题</h4>
-              <p>待补充详细描述。这里将会放你的高考备考故事、成绩提升经历等。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例经历标题</h4>
-              <p>待补充详细描述。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 学科竞赛 -->
-        <div class="section" id="hs-competition">
-          <h2 class="section-title">学科竞赛</h2>
-          <p class="section-desc">待补充 —— 参加过的学科竞赛、获奖情况等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例竞赛名称</h4>
-              <p>待补充 —— 竞赛内容、获奖等级、参赛时间等。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 足球 -->
-        <div class="section" id="hs-football">
-          <h2 class="section-title">足球</h2>
-          <p class="section-desc">待补充 —— 高中足球经历、比赛、队友等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例足球经历</h4>
-              <p>待补充详细描述。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 校园生活 -->
-        <div class="section" id="hs-life">
-          <h2 class="section-title">校园生活</h2>
-          <p class="section-desc">待补充 —— 高中生活点滴、校园碎片。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例生活片段</h4>
-              <p>待补充详细描述。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
+  <div class="page" id="page-highschool"></div>
 
   <!-- ===== University Page ===== -->
-  <div class="page" id="page-university">
-    <div class="content-page">
-      <aside class="sidebar">
-        <a class="back-home" data-page="home"><span class="back-arrow"></span>返回首页</a>
-        <div class="sidebar-title">大学</div>
-        <ul class="sidebar-nav" data-page="university">
-          <li><a data-section="uni-internship" class="active">实习经历</a></li>
-          <li><a data-section="uni-research">科研/论文</a></li>
-          <li><a data-section="uni-grades">学科成绩</a></li>
-          <li><a data-section="uni-football">足球</a></li>
-          <li><a data-section="uni-competition">竞赛</a></li>
-          <li><a data-section="uni-volunteer">志愿者</a></li>
-          <li><a data-section="uni-life">校园生活</a></li>
-          <li><a data-section="uni-english">英语</a></li>
-        </ul>
-      </aside>
-      <main class="content-area">
-        <!-- 实习经历 -->
-        <div class="section active" id="uni-internship">
-          <h2 class="section-title">实习经历</h2>
-          <p class="section-desc">待补充 —— 实习公司、岗位、工作内容、收获等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例实习经历</h4>
-              <p>待补充 —— 公司名称、实习时间、工作内容描述。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 科研/论文 -->
-        <div class="section" id="uni-research">
-          <h2 class="section-title">科研/论文</h2>
-          <p class="section-desc">待补充 —— 课题组经历、研究方向、论文发表等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例科研项目</h4>
-              <p>待补充 —— 课题组名称、研究方向、参与项目、论文成果等。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 学科成绩 -->
-        <div class="section" id="uni-grades">
-          <h2 class="section-title">学科成绩</h2>
-          <p class="section-desc">待补充 —— 大学 GPA、核心课程成绩、学业荣誉等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例学业记录</h4>
-              <p>待补充 —— GPA、排名、奖学金、核心课程等。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 足球 -->
-        <div class="section" id="uni-football">
-          <h2 class="section-title">足球</h2>
-          <p class="section-desc">待补充 —— 大学足球经历、院队/校队、比赛等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例足球经历</h4>
-              <p>待补充详细描述。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 竞赛 -->
-        <div class="section" id="uni-competition">
-          <h2 class="section-title">竞赛</h2>
-          <p class="section-desc">待补充 —— 大学参加的各类竞赛、获奖情况。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例竞赛名称</h4>
-              <p>待补充 —— 竞赛内容、团队、获奖等级等。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 志愿者 -->
-        <div class="section" id="uni-volunteer">
-          <h2 class="section-title">志愿者</h2>
-          <p class="section-desc">待补充 —— 志愿活动、社会服务经历等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例志愿活动</h4>
-              <p>待补充 —— 活动名称、时间、内容、收获等。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 校园生活 -->
-        <div class="section" id="uni-life">
-          <h2 class="section-title">校园生活</h2>
-          <p class="section-desc">待补充 —— 大学生活碎片、校园点滴。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例生活片段</h4>
-              <p>待补充详细描述。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 英语 -->
-        <div class="section" id="uni-english">
-          <h2 class="section-title">英语</h2>
-          <p class="section-desc">待补充 —— 雅思备考、英语能力提升、交换申请等。</p>
-          <div class="placeholder-item">
-            <div class="placeholder-img">待补充图片</div>
-            <div class="placeholder-content">
-              <h4>示例英语学习记录</h4>
-              <p>待补充 —— 雅思成绩/目标、备考经历、英语相关活动等。</p>
-              <span class="placeholder-tag">待补充</span>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
+  <div class="page" id="page-university"></div>
 
 </div>
 
@@ -648,8 +471,73 @@ body {
 const state = {
   currentPage: 'home',
   coverRevealed: false,
-  highschoolSection: 'hs-study',
-  universitySection: 'uni-internship',
+};
+
+// ========== Data ==========
+function ev(title, desc, imgs, caption) { return { title, desc, imgs: imgs || [], caption: caption || '' }; }
+
+const profileData = {
+  highschool: {
+    name: '高中',
+    grid: 'grid-2x2',
+    sections: [
+      { id: 'hs-study', name: '高考学习', desc: '高考成绩 · 备考经历 · 学习方法', events: [
+        ev('示例事件标题', '待补充 —— 这里放高考相关的具体事件图文介绍。'),
+        ev('示例事件标题', '待补充 —— 这里放高考相关的具体事件图文介绍。'),
+      ]},
+      { id: 'hs-competition', name: '学科竞赛', desc: '竞赛 · 获奖情况', events: [
+        ev('示例竞赛事件', '待补充 —— 这里放学科竞赛相关的具体事件图文介绍。'),
+        ev('示例竞赛事件', '待补充 —— 这里放学科竞赛相关的具体事件图文介绍。'),
+      ]},
+      { id: 'hs-football', name: '足球', desc: '比赛 · 队友 · 校园', events: [
+        ev('示例足球事件', '待补充 —— 这里放足球相关的具体事件图文介绍。'),
+      ]},
+      { id: 'hs-life', name: '校园生活', desc: '生活点滴 · 校园碎片', events: [
+        ev('示例生活片段', '待补充 —— 这里放校园生活相关的具体事件图文介绍。'),
+      ]},
+    ],
+  },
+  university: {
+    name: '大学',
+    sections: [
+      { id: 'uni-internship', name: '实习经历', desc: '公司 · 岗位 · 收获', events: [
+        ev('示例实习经历', '待补充 —— 这里放实习相关的具体事件图文介绍。'),
+        ev('示例实习经历', '待补充 —— 这里放实习相关的具体事件图文介绍。'),
+      ]},
+      { id: 'uni-research', name: '科研/论文', desc: '课题 · 方向 · 成果', events: [
+        ev('示例科研项目', '待补充 —— 这里放科研相关的具体事件图文介绍。'),
+      ]},
+      { id: 'uni-grades', name: '学科成绩', desc: 'GPA · 核心课程 · 荣誉', events: [
+        ev('示例学业记录', '待补充 —— 这里放学业相关的具体事件图文介绍。'),
+      ]},
+      { id: 'uni-football', name: '足球', desc: '院队/校队 · 比赛', events: [
+        ev('示例足球经历', '待补充 —— 这里放足球相关的具体事件图文介绍。'),
+      ]},
+      { id: 'uni-competition', name: '竞赛', desc: '团队 · 获奖', events: [
+        ev('示例竞赛经历', '待补充 —— 这里放竞赛相关的具体事件图文介绍。'),
+      ]},
+      { id: 'uni-volunteer', name: '志愿者', desc: '志愿活动 · 社会服务', events: [
+        ev('示例志愿活动', '待补充 —— 这里放志愿相关的具体事件图文介绍。', [
+          'images/f104a424edd00c78221e74dc9c4af014.jpg',
+          'images/74fd888a9d26671a518302c89b28d6a0.jpg',
+          'images/ab4bec413b6b39fded320840621991b4.jpg',
+          'images/2327bed5ec1439d8519cdc3a248ac9c6.jpg',
+        ], '2026·迎新'),
+      ]},
+      { id: 'uni-life', name: '校园生活', desc: '生活碎片 · 校园点滴', events: [
+        ev('示例生活片段', '待补充 —— 这里放校园生活相关的具体事件图文介绍。'),
+      ]},
+      { id: 'uni-english', name: '英语', desc: '雅思 · 能力提升', events: [
+        ev('示例英语记录', '待补充 —— 这里放英语相关的具体事件图文介绍。'),
+      ]},
+    ],
+  },
+};
+
+// ========== View state ==========
+const viewState = {
+  highschool: { level: 'sections', sectionId: null, eventIndex: null },
+  university: { level: 'sections', sectionId: null, eventIndex: null },
 };
 
 // ========== DOM refs ==========
@@ -728,6 +616,10 @@ function navigateTo(page) {
     home.classList.remove('revealing');
     void home.offsetWidth; // 强制重排，让动画能重新触发
     home.classList.add('revealing');
+  } else if (page === 'highschool' || page === 'university') {
+    // 每次从首页进入内容页，都从第一级「板块方框」开始
+    viewState[page] = { level: 'sections', sectionId: null, eventIndex: null };
+    renderContentPage(page);
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -736,42 +628,115 @@ function navigateTo(page) {
 // Nav brand click
 document.querySelector('.nav-brand').addEventListener('click', () => navigateTo('home'));
 
-// Back-home buttons click
-document.querySelectorAll('.back-home').forEach(btn => {
-  btn.addEventListener('click', () => navigateTo('home'));
-});
-
 // Home card clicks
 document.querySelectorAll('.home-card[data-page]').forEach(card => {
   card.addEventListener('click', () => navigateTo(card.dataset.page));
 });
 
-// ========== Section Switching (Sidebar) ==========
-document.querySelectorAll('.sidebar-nav').forEach(nav => {
-  nav.addEventListener('click', (e) => {
-    const link = e.target.closest('a[data-section]');
-    if (!link) return;
+// ========== Content Page Rendering ==========
+function renderContentPage(pageKey) {
+  const pageEl = document.getElementById('page-' + pageKey);
+  const data = profileData[pageKey];
+  const vs = viewState[pageKey];
+  let html = '';
 
-    const page = nav.dataset.page;
-    const section = link.dataset.section;
+  if (vs.level === 'sections') {
+    // 第一级：板块方框
+    html = `
+      <div class="content-page">
+        <div class="view-header"><span class="view-title">${data.name}</span></div>
+        <div class="section-grid ${data.grid || ''}">
+          ${data.sections.map(s => `
+            <button class="section-box" data-section="${s.id}">
+              <div class="section-box-name">${s.name}</div>
+              <div class="section-box-desc">${s.desc}</div>
+            </button>`).join('')}
+        </div>
+      </div>`;
+  } else if (vs.level === 'grid') {
+    // 第二级：图片网格
+    const section = data.sections.find(s => s.id === vs.sectionId);
+    html = `
+      <div class="content-page">
+        <div class="view-header">
+          <button class="view-back" data-back><span class="back-arrow"></span>返回</button>
+          <span class="view-title">${section.name}</span>
+        </div>
+        <div class="photo-grid">
+          ${section.events.map((e, i) => `
+            <button class="photo-card" data-event="${i}">
+              <span class="photo-thumb">${e.imgs.length ? `<img src="${e.imgs[0]}" alt="${e.title}">` : '待补充图片'}</span>
+              ${e.caption ? `<span class="photo-caption">${e.caption}</span>` : ''}
+            </button>`).join('')}
+        </div>
+      </div>`;
+  } else if (vs.level === 'detail') {
+    // 第三级：图文详情
+    const section = data.sections.find(s => s.id === vs.sectionId);
+    const event = section.events[vs.eventIndex];
 
-    // Update state
-    if (page === 'highschool') state.highschoolSection = section;
-    if (page === 'university') state.universitySection = section;
+    let imagesHtml = '';
+    if (event.imgs.length === 1) {
+      imagesHtml = `<div class="event-image"><img src="${event.imgs[0]}" alt="${event.title}"></div>`;
+    } else if (event.imgs.length > 1) {
+      imagesHtml = `<div class="event-images">${event.imgs.map(img => `<div class="event-image"><img src="${img}" alt="${event.title}"></div>`).join('')}</div>`;
+    } else {
+      imagesHtml = `<div class="event-image">待补充图片</div>`;
+    }
 
-    // Deactivate all links in this sidebar
-    nav.querySelectorAll('a').forEach(a => a.classList.remove('active'));
-    link.classList.add('active');
+    html = `
+      <div class="content-page">
+        <div class="view-header">
+          <button class="view-back" data-back><span class="back-arrow"></span>返回</button>
+          <span class="view-title">${section.name}</span>
+        </div>
+        <div class="event-detail">
+          ${imagesHtml}
+          <h2 class="event-title">${event.title}</h2>
+          <p class="event-desc">${event.desc}</p>
+        </div>
+      </div>`;
+  }
 
-    // Switch section content
-    const pageEl = document.getElementById('page-' + page);
-    if (!pageEl) return;
+  pageEl.innerHTML = html;
+  bindContentPage(pageKey);
+}
 
-    pageEl.querySelectorAll('.content-area .section').forEach(s => s.classList.remove('active'));
-    const target = document.getElementById(section);
-    if (target) target.classList.add('active');
+function bindContentPage(pageKey) {
+  const pageEl = document.getElementById('page-' + pageKey);
+  const vs = viewState[pageKey];
+
+  // 板块方框 → 图片网格
+  pageEl.querySelectorAll('.section-box').forEach(box => {
+    box.addEventListener('click', () => {
+      vs.level = 'grid';
+      vs.sectionId = box.dataset.section;
+      vs.eventIndex = null;
+      renderContentPage(pageKey);
+      window.scrollTo({ top: 0 });
+    });
   });
-});
+
+  // 图片 → 图文详情
+  pageEl.querySelectorAll('.photo-card').forEach(card => {
+    card.addEventListener('click', () => {
+      vs.level = 'detail';
+      vs.eventIndex = parseInt(card.dataset.event, 10);
+      renderContentPage(pageKey);
+      window.scrollTo({ top: 0 });
+    });
+  });
+
+  // 返回上一级
+  pageEl.querySelectorAll('.view-back').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (vs.level === 'detail') { vs.level = 'grid'; }
+      else if (vs.level === 'grid') { vs.level = 'sections'; vs.sectionId = null; }
+      renderContentPage(pageKey);
+      window.scrollTo({ top: 0 });
+    });
+  });
+}
 
 // ========== Initial state ==========
 document.body.style.overflow = 'hidden';
