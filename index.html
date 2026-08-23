@@ -474,7 +474,8 @@ const state = {
 };
 
 // ========== Data ==========
-function ev(title, desc, imgs, caption) { return { title, desc, imgs: imgs || [], caption: caption || '' }; }
+// cover: 网格缩略图单独指定的封面图；不传则用 imgs[0]
+function ev(title, desc, imgs, caption, cover) { return { title, desc, imgs: imgs || [], caption: caption || '', cover: cover || '' }; }
 
 const profileData = {
   highschool: {
@@ -486,14 +487,18 @@ const profileData = {
         ev('示例事件标题', '待补充 —— 这里放高考相关的具体事件图文介绍。'),
       ]},
       { id: 'hs-competition', name: '学科竞赛', desc: '竞赛 · 获奖情况', events: [
-        ev('示例竞赛事件', '待补充 —— 这里放学科竞赛相关的具体事件图文介绍。'),
+        ev('示例竞赛事件', '待补充 —— 这里放学科竞赛相关的具体事件图文介绍。', [
+          'images/82eebb383752d07a198f79bc5e7068c2.jpg',
+        ], '第41届全国中学生物理竞赛·上海'),
         ev('示例竞赛事件', '待补充 —— 这里放学科竞赛相关的具体事件图文介绍。'),
       ]},
       { id: 'hs-football', name: '足球', desc: '比赛 · 队友 · 校园', events: [
         ev('示例足球事件', '待补充 —— 这里放足球相关的具体事件图文介绍。'),
       ]},
       { id: 'hs-life', name: '校园生活', desc: '生活点滴 · 校园碎片', events: [
-        ev('示例生活片段', '待补充 —— 这里放校园生活相关的具体事件图文介绍。'),
+        ev('示例生活片段', '待补充 —— 这里放校园生活相关的具体事件图文介绍。', [
+          'images/574b589637ae4d6f4e0d260efdd4a871.jpg',
+        ], '高二社会实践'),
       ]},
     ],
   },
@@ -522,7 +527,7 @@ const profileData = {
           'images/74fd888a9d26671a518302c89b28d6a0.jpg',
           'images/ab4bec413b6b39fded320840621991b4.jpg',
           'images/2327bed5ec1439d8519cdc3a248ac9c6.jpg',
-        ], '2026·迎新'),
+        ], '2026·迎新', 'images/5fb7e76583f327e7b1d646bbceb99a5b.jpg'),
       ]},
       { id: 'uni-life', name: '校园生活', desc: '生活碎片 · 校园点滴', events: [
         ev('示例生活片段', '待补充 —— 这里放校园生活相关的具体事件图文介绍。'),
@@ -644,7 +649,10 @@ function renderContentPage(pageKey) {
     // 第一级：板块方框
     html = `
       <div class="content-page">
-        <div class="view-header"><span class="view-title">${data.name}</span></div>
+        <div class="view-header">
+          <button class="view-back" data-back><span class="back-arrow"></span>返回</button>
+          <span class="view-title">${data.name}</span>
+        </div>
         <div class="section-grid ${data.grid || ''}">
           ${data.sections.map(s => `
             <button class="section-box" data-section="${s.id}">
@@ -663,11 +671,14 @@ function renderContentPage(pageKey) {
           <span class="view-title">${section.name}</span>
         </div>
         <div class="photo-grid">
-          ${section.events.map((e, i) => `
+          ${section.events.map((e, i) => {
+            const thumb = e.cover || e.imgs[0];
+            return `
             <button class="photo-card" data-event="${i}">
-              <span class="photo-thumb">${e.imgs.length ? `<img src="${e.imgs[0]}" alt="${e.title}">` : '待补充图片'}</span>
+              <span class="photo-thumb">${thumb ? `<img src="${thumb}" alt="${e.title}">` : '待补充图片'}</span>
               ${e.caption ? `<span class="photo-caption">${e.caption}</span>` : ''}
-            </button>`).join('')}
+            </button>`;
+          }).join('')}
         </div>
       </div>`;
   } else if (vs.level === 'detail') {
@@ -688,7 +699,7 @@ function renderContentPage(pageKey) {
       <div class="content-page">
         <div class="view-header">
           <button class="view-back" data-back><span class="back-arrow"></span>返回</button>
-          <span class="view-title">${section.name}</span>
+          <span class="view-title">${event.caption || section.name}</span>
         </div>
         <div class="event-detail">
           ${imagesHtml}
@@ -732,6 +743,7 @@ function bindContentPage(pageKey) {
     btn.addEventListener('click', () => {
       if (vs.level === 'detail') { vs.level = 'grid'; }
       else if (vs.level === 'grid') { vs.level = 'sections'; vs.sectionId = null; }
+      else { navigateTo('home'); return; }  // 第一级：返回首页
       renderContentPage(pageKey);
       window.scrollTo({ top: 0 });
     });
