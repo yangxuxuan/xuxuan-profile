@@ -6,19 +6,17 @@ const editorPendingImages = []; // { name, blob, url } 待发布的新图
 function isEditMode() { return editor.enabled; }
 
 function initEditor() {
-  const btn = document.getElementById('editBtn');
-  if (!btn) return;
-  btn.addEventListener('click', function () {
-    if (!editor.enabled) {
-      if (!getToken()) openTokenModal();
-      else enterEditMode();
-    } else {
-      exitEditMode();
-    }
+  document.getElementById('enterEditBtn').addEventListener('click', function () {
+    if (!getToken()) openTokenModal();
+    else enterEditMode();
   });
 
+  document.getElementById('tokenCancelBtn').addEventListener('click', function () {
+    document.getElementById('tokenModal').hidden = true;
+  });
   document.getElementById('tokenSaveBtn').addEventListener('click', saveToken);
-  document.getElementById('exitEditBtn').addEventListener('click', exitEditMode);
+  document.getElementById('discardBtn').addEventListener('click', discardEdit);
+  document.getElementById('saveExitBtn').addEventListener('click', saveAndExit);
   document.getElementById('publishBtn').addEventListener('click', publish);
   document.getElementById('evCancel').addEventListener('click', function () {
     document.getElementById('eventModal').hidden = true;
@@ -52,15 +50,34 @@ function enterEditMode() {
   editor.enabled = true;
   editor.token = getToken();
   document.body.classList.add('editing');
-  document.getElementById('editBar').hidden = false;
+  document.getElementById('enterEditBtn').hidden = true;
+  document.getElementById('discardBtn').hidden = false;
+  document.getElementById('saveExitBtn').hidden = false;
+  document.getElementById('publishBtn').hidden = false;
   rerenderCurrent();
 }
 
 function exitEditMode() {
   editor.enabled = false;
   document.body.classList.remove('editing');
-  document.getElementById('editBar').hidden = true;
+  document.getElementById('enterEditBtn').hidden = false;
+  document.getElementById('discardBtn').hidden = true;
+  document.getElementById('saveExitBtn').hidden = true;
+  document.getElementById('publishBtn').hidden = true;
   rerenderCurrent();
+}
+
+function discardEdit() {
+  if (!confirm('确定放弃所有还没发布的修改？')) return;
+  clearDraft();
+  editorPendingImages.length = 0;
+  contentData = JSON.parse(JSON.stringify(publishedData));
+  exitEditMode();
+}
+
+function saveAndExit() {
+  setDraft(contentData);
+  exitEditMode();
 }
 
 function rerenderCurrent() {
@@ -206,11 +223,17 @@ async function publish() {
 
     editorPendingImages.length = 0;
     clearDraft();
+    publishedData = JSON.parse(JSON.stringify(contentData));
     pubBtn.textContent = '已发布 ✓';
-    setTimeout(function () { pubBtn.textContent = '保存并发布'; pubBtn.disabled = false; }, 3000);
+    setTimeout(function () {
+      exitEditMode();
+      pubBtn.textContent = '发布';
+      pubBtn.disabled = false;
+    }, 1200);
   } catch (err) {
     alert('发布失败：' + err.message);
-    pubBtn.textContent = '保存并发布'; pubBtn.disabled = false;
+    pubBtn.textContent = '发布';
+    pubBtn.disabled = false;
   }
 }
 
