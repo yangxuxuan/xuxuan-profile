@@ -393,6 +393,21 @@ body {
   line-height: 1.9;
 }
 
+/* 左图右文排版：仅对 layout: 'split' 的事件生效 */
+.event-detail-split {
+  max-width: 1040px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+.event-detail-split .event-image { aspect-ratio: 4 / 3; margin-bottom: 0; }
+.event-detail-split .event-images {
+  grid-template-columns: 1fr;
+  margin-bottom: 0;
+}
+.event-detail-split .event-images .event-image { aspect-ratio: 4 / 3; }
+
 /* ========== Responsive ========== */
 @media (max-width: 768px) {
   .cover-title { font-size: 1.8rem; }
@@ -402,6 +417,7 @@ body {
   .section-grid { grid-template-columns: repeat(2, 1fr); }
   .photo-grid { grid-template-columns: repeat(2, 1fr); }
   .nav { padding: 0 1rem; }
+  .event-detail-split { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 </style>
 </head>
@@ -466,6 +482,9 @@ body {
 
 </div>
 
+<script src="js/fallback-data.js"></script>
+<script src="js/content.js"></script>
+<script src="js/storage.js"></script>
 <script>
 // ========== State ==========
 const state = {
@@ -474,70 +493,9 @@ const state = {
 };
 
 // ========== Data ==========
-// cover: 网格缩略图单独指定的封面图；不传则用 imgs[0]
-function ev(title, desc, imgs, caption, cover) { return { title, desc, imgs: imgs || [], caption: caption || '', cover: cover || '' }; }
-
-const profileData = {
-  highschool: {
-    name: '高中',
-    grid: 'grid-2x2',
-    sections: [
-      { id: 'hs-study', name: '高考学习', desc: '高考成绩 · 备考经历 · 学习方法', events: [
-        ev('示例事件标题', '待补充 —— 这里放高考相关的具体事件图文介绍。'),
-        ev('示例事件标题', '待补充 —— 这里放高考相关的具体事件图文介绍。'),
-      ]},
-      { id: 'hs-competition', name: '学科竞赛', desc: '竞赛 · 获奖情况', events: [
-        ev('示例竞赛事件', '待补充 —— 这里放学科竞赛相关的具体事件图文介绍。', [
-          'images/82eebb383752d07a198f79bc5e7068c2.jpg',
-        ], '第41届全国中学生物理竞赛·上海'),
-        ev('示例竞赛事件', '待补充 —— 这里放学科竞赛相关的具体事件图文介绍。'),
-      ]},
-      { id: 'hs-football', name: '足球', desc: '比赛 · 队友 · 校园', events: [
-        ev('示例足球事件', '待补充 —— 这里放足球相关的具体事件图文介绍。'),
-      ]},
-      { id: 'hs-life', name: '校园生活', desc: '生活点滴 · 校园碎片', events: [
-        ev('示例生活片段', '待补充 —— 这里放校园生活相关的具体事件图文介绍。', [
-          'images/574b589637ae4d6f4e0d260efdd4a871.jpg',
-        ], '高二社会实践'),
-      ]},
-    ],
-  },
-  university: {
-    name: '大学',
-    sections: [
-      { id: 'uni-internship', name: '实习经历', desc: '公司 · 岗位 · 收获', events: [
-        ev('示例实习经历', '待补充 —— 这里放实习相关的具体事件图文介绍。'),
-        ev('示例实习经历', '待补充 —— 这里放实习相关的具体事件图文介绍。'),
-      ]},
-      { id: 'uni-research', name: '科研/论文', desc: '课题 · 方向 · 成果', events: [
-        ev('示例科研项目', '待补充 —— 这里放科研相关的具体事件图文介绍。'),
-      ]},
-      { id: 'uni-grades', name: '学科成绩', desc: 'GPA · 核心课程 · 荣誉', events: [
-        ev('示例学业记录', '待补充 —— 这里放学业相关的具体事件图文介绍。'),
-      ]},
-      { id: 'uni-football', name: '足球', desc: '院队/校队 · 比赛', events: [
-        ev('示例足球经历', '待补充 —— 这里放足球相关的具体事件图文介绍。'),
-      ]},
-      { id: 'uni-competition', name: '竞赛', desc: '团队 · 获奖', events: [
-        ev('示例竞赛经历', '待补充 —— 这里放竞赛相关的具体事件图文介绍。'),
-      ]},
-      { id: 'uni-volunteer', name: '志愿者', desc: '志愿活动 · 社会服务', events: [
-        ev('示例志愿活动', '待补充 —— 这里放志愿相关的具体事件图文介绍。', [
-          'images/f104a424edd00c78221e74dc9c4af014.jpg',
-          'images/74fd888a9d26671a518302c89b28d6a0.jpg',
-          'images/ab4bec413b6b39fded320840621991b4.jpg',
-          'images/2327bed5ec1439d8519cdc3a248ac9c6.jpg',
-        ], '2026·迎新', 'images/5fb7e76583f327e7b1d646bbceb99a5b.jpg'),
-      ]},
-      { id: 'uni-life', name: '校园生活', desc: '生活碎片 · 校园点滴', events: [
-        ev('示例生活片段', '待补充 —— 这里放校园生活相关的具体事件图文介绍。'),
-      ]},
-      { id: 'uni-english', name: '英语', desc: '雅思 · 能力提升', events: [
-        ev('示例英语记录', '待补充 —— 这里放英语相关的具体事件图文介绍。'),
-      ]},
-    ],
-  },
-};
+// 内容源：优先 data.json，其次 FALLBACK_DATA（js/fallback-data.js）。
+// 由 js/content.js 的 ensureEventIds 补全事件 id。
+let contentData = ensureEventIds(FALLBACK_DATA);
 
 // ========== View state ==========
 const viewState = {
@@ -641,7 +599,7 @@ document.querySelectorAll('.home-card[data-page]').forEach(card => {
 // ========== Content Page Rendering ==========
 function renderContentPage(pageKey) {
   const pageEl = document.getElementById('page-' + pageKey);
-  const data = profileData[pageKey];
+  const data = contentData[pageKey];
   const vs = viewState[pageKey];
   let html = '';
 
@@ -695,17 +653,27 @@ function renderContentPage(pageKey) {
       imagesHtml = `<div class="event-image">待补充图片</div>`;
     }
 
+    const bodyHtml = `
+          <h2 class="event-title">${event.title}</h2>
+          <p class="event-desc">${event.desc}</p>`;
+
+    // layout: 'split' → 左图右文；其余沿用默认的上图下文
+    const detailHtml = event.layout === 'split'
+      ? `<div class="event-detail event-detail-split">
+          <div class="event-split-media">${imagesHtml}</div>
+          <div class="event-split-body">${bodyHtml}</div>
+        </div>`
+      : `<div class="event-detail">
+          ${imagesHtml}${bodyHtml}
+        </div>`;
+
     html = `
       <div class="content-page">
         <div class="view-header">
           <button class="view-back" data-back><span class="back-arrow"></span>返回</button>
           <span class="view-title">${event.caption || section.name}</span>
         </div>
-        <div class="event-detail">
-          ${imagesHtml}
-          <h2 class="event-title">${event.title}</h2>
-          <p class="event-desc">${event.desc}</p>
-        </div>
+        ${detailHtml}
       </div>`;
   }
 
@@ -757,6 +725,17 @@ document.body.style.overflow = 'hidden';
 if (window.scrollY > 100) {
   hideCover();
 }
+
+// ========== Init: load content ==========
+(async function init() {
+  const loaded = await loadData();
+  contentData = loaded ? ensureEventIds(loaded) : ensureEventIds(FALLBACK_DATA);
+  const draft = getDraft();
+  if (draft) contentData = draft;
+  if (state.currentPage === 'highschool' || state.currentPage === 'university') {
+    renderContentPage(state.currentPage);
+  }
+})();
 </script>
 </body>
 </html>
