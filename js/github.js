@@ -7,6 +7,12 @@ function utf8ToBase64(str) {
   return btoa(bin);
 }
 
+function base64ToUtf8(b64) {
+  const bin = atob(b64);
+  const bytes = Uint8Array.from(bin, function (c) { return c.charCodeAt(0); });
+  return new TextDecoder().decode(bytes);
+}
+
 function buildPutPayload(filePath, base64, sha, message, branch) {
   const body = { message: message, content: base64, branch: branch || 'main' };
   if (sha) body.sha = sha;
@@ -82,5 +88,5 @@ class GitHubClient {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { GitHubClient: GitHubClient, utf8ToBase64: utf8ToBase64, buildPutPayload: buildPutPayload };
+  module.exports = { GitHubClient: GitHubClient, utf8ToBase64: utf8ToBase64, base64ToUtf8: base64ToUtf8, buildPutPayload: buildPutPayload };
 }

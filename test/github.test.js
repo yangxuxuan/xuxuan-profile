@@ -20,3 +20,8 @@ test('GitHubClient 构造默认 branch', () => {
   const c = new g.GitHubClient({ token: 't', owner: 'o', repo: 'r' });
   assert.equal(c.branch, 'main');
 });
+
+test('base64ToUtf8 与 utf8ToBase64 互逆（中文）', () => {
+  const s = '高中 · 竞赛';
+  assert.equal(g.base64ToUtf8(g.utf8ToBase64(s)), s);
+});
