@@ -9,13 +9,13 @@
         "desc": "高考成绩 · 备考经历 · 学习方法",
         "events": [
           {
-            "title": "心心相印！！！！",
-            "desc": "北大复旦南大一家亲！",
+            "title": "示例事件标题",
+            "desc": "待补充 —— 这里放高考相关的具体事件图文介绍。",
             "imgs": [],
-            "caption": "寝室录取合影",
+            "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_o2bzhg1jmtad9u7a"
+            "id": "evt_wo0rqvtnmtadjbv1"
           },
           {
             "title": "示例事件标题",
@@ -24,7 +24,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_klqzz96pmtad9u7a"
+            "id": "evt_71h0diximtadjbv1"
           }
         ]
       },
@@ -37,16 +37,12 @@
             "title": "物竞，还有你们",
             "desc": "高中两年的物理竞赛，让我学到很多......\n高二那年物竞，在还没有掌握什么专业知识的情况下，考出了省第14名的成绩，然而前13名成为海南省省队队员，我差之毫厘......\n但是当时的我感觉到的更多不是失望而是希望，我坚信在经过一年的学习，我也一定能进入省队......\n于是我寒暑假依然坚持到外省培训，挤占晚修时间自学物理竞赛。终于，在高三开学，我迎来了第41届全国中学生物理竞赛......\n初赛全省第五，更坚定了我的省队信心，但是复赛的理论部分我却发挥失常，甚至差一点就连复赛实验都没有进。最终的省队选拔理论部分要占到30%，这对我来说打击无疑是巨大的。一整年的付出换来了什么呢？哪一个晚上我躺在床上自己哭了很久......\n但是我最后没有选择放弃，毕竟还有实验，那就意味着还有可能。于是我短暂的调整过后，就开始全力备战复赛实验\n最后，实验分数全省第二，总分全省第7，进入省队......\n那一瞬间我感觉一切都值了......\n海南是物理竞赛弱省，与其他省份的竞赛水平差距我心里是清楚的，我的目标就是能够站在决赛的舞台，我做到了......\n上海决赛，我收获的不仅仅是一枚铜牌，更是一段经历，这一生可能都独有的经历......那是第一次带着目的来到一座城市，不止目的，还有寄托、希望......\n730天的物理竞赛，让我看清坚持的力量，让我看清自己的渺小，让我不会再被任何挫折打倒，因为没有什么挫折会比那些变态的物理竞赛题更难对付了......\n730天的物理竞赛，我收获一段友谊，在这段友谊面前一块铜牌显得廉价......\n晚修趁老师不注意偷偷摸鱼用多媒体看物理科普视频\n几个人争论一道受力分析几根粉笔划来划去要吵起来\n一道难题集萃上的题几个人讨论的头头是道结果答案一个都不对......\n730以来我们最爱的那首歌还记得吗 玫瑰花的葬礼 复赛前一天我们唱了一整节晚自习......\n730天，做过的题目推过的公式我都会忘，但我不会忘记那间教室，那几张合影，还有照片里的人",
             "imgs": [
-              "images/496a7ebca20f905277b29ea8e55d323b.jpg.jpg",
-              "images/728ad92feb35abce992a036ed14df418.jpg.jpg",
-              "images/087faa361ce351457cdd74ef7ee123e0.jpg.jpg",
-              "images/34bb01d7bb6de5005794ff16be169569.jpg.jpg",
-              "images/2fba77246ba3537a362389ae91d081b2.jpg.jpg"
+              "images/9316332889f0742d4a6482f7efed50cb.jpg.jpg"
             ],
             "caption": "第41届全国中学生物理竞赛·上海",
-            "cover": "images/80915ee79b23de131fad5cf35e964775.jpg.jpg",
+            "cover": "images/f32db84b26d278b72ace04327495e904.jpg.jpg",
             "layout": "",
-            "id": "evt_c6uq023hmtad9u7a"
+            "id": "evt_no9iqrlvmtadjbv1"
           },
           {
             "title": "示例竞赛事件",
@@ -55,7 +51,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_89kfq9zzmtad9u7a"
+            "id": "evt_r356fn3emtadjbv1"
           }
         ]
       },
@@ -71,7 +67,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_g2r9sjqvmtad9u7a"
+            "id": "evt_rsiz2crfmtadjbv1"
           }
         ]
       },
@@ -89,7 +85,7 @@
             "caption": "高二社会实践",
             "cover": "",
             "layout": "",
-            "id": "evt_iuk700b4mtad9u7a"
+            "id": "evt_c7n0zb0smtadjbv1"
           }
         ]
       }
@@ -110,7 +106,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_3t9q6zsgmtad9u7a"
+            "id": "evt_m7dc9joxmtadjbv1"
           },
           {
             "title": "示例实习经历",
@@ -119,7 +115,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_ntvfkg0hmtad9u7a"
+            "id": "evt_kmlimdhomtadjbv1"
           }
         ]
       },
@@ -135,7 +131,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_gbb4uxu5mtad9u7a"
+            "id": "evt_xr9hx0zcmtadjbv1"
           }
         ]
       },
@@ -151,7 +147,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_vbz7tg6tmtad9u7a"
+            "id": "evt_ihfkp18hmtadjbv1"
           }
         ]
       },
@@ -169,7 +165,7 @@
             "caption": "赛后合影",
             "cover": "",
             "layout": "split",
-            "id": "evt_a5dq0qv9mtad9u7a"
+            "id": "evt_8g4yacffmtadjbv1"
           }
         ]
       },
@@ -185,7 +181,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_qw8279uhmtad9u7a"
+            "id": "evt_nj1ko4vzmtadjbv1"
           }
         ]
       },
@@ -206,7 +202,7 @@
             "caption": "2026·迎新",
             "cover": "images/5fb7e76583f327e7b1d646bbceb99a5b.jpg",
             "layout": "",
-            "id": "evt_auvy7kg6mtad9u7a"
+            "id": "evt_ib11av1smtadjbv1"
           }
         ]
       },
@@ -222,7 +218,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_7zmf07ppmtad9u7a"
+            "id": "evt_8485g9f0mtadjbv1"
           }
         ]
       },
@@ -238,7 +234,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_44ok2gajmtad9u7a"
+            "id": "evt_vcah2ompmtadjbv1"
           }
         ]
       }
