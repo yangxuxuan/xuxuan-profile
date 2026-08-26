@@ -9,13 +9,13 @@
         "desc": "高考成绩 · 备考经历 · 学习方法",
         "events": [
           {
-            "title": "心心相印！！！",
+            "title": "心心相印！！！！",
             "desc": "待补充 —— 这里放高考相关的具体事件图文介绍。",
             "imgs": [],
-            "caption": "",
+            "caption": "寝室录取合影",
             "cover": "",
             "layout": "",
-            "id": "evt_nbxtvlfcmtadxxgl"
+            "id": "evt_2yg9ztdtmtadzv0f"
           },
           {
             "title": "示例事件标题",
@@ -24,7 +24,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_yxnnhnn2mtadxxgl"
+            "id": "evt_oxuqh06umtadzv0f"
           }
         ]
       },
@@ -42,7 +42,7 @@
             "caption": "第41届全国中学生物理竞赛·上海",
             "cover": "",
             "layout": "",
-            "id": "evt_r48ro8s8mtadxxgl"
+            "id": "evt_a6op2bl6mtadzv0f"
           },
           {
             "title": "示例竞赛事件",
@@ -51,7 +51,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_lfbre1pkmtadxxgl"
+            "id": "evt_rabira8emtadzv0f"
           }
         ]
       },
@@ -67,7 +67,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_8ottozzgmtadxxgl"
+            "id": "evt_43dheh3hmtadzv0f"
           }
         ]
       },
@@ -85,7 +85,7 @@
             "caption": "高二社会实践",
             "cover": "",
             "layout": "",
-            "id": "evt_hlu1ux4amtadxxgl"
+            "id": "evt_qopfoyfimtadzv0f"
           }
         ]
       }
@@ -106,7 +106,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_49qgcxhtmtadxxgl"
+            "id": "evt_nn2w91grmtadzv0f"
           },
           {
             "title": "示例实习经历",
@@ -115,7 +115,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_g3aq703amtadxxgl"
+            "id": "evt_wqv38rmamtadzv0f"
           }
         ]
       },
@@ -131,7 +131,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_4idhdl48mtadxxgl"
+            "id": "evt_9kioi59cmtadzv0f"
           }
         ]
       },
@@ -147,7 +147,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_u5n3oz62mtadxxgl"
+            "id": "evt_j4exb6exmtadzv0f"
           }
         ]
       },
@@ -165,7 +165,7 @@
             "caption": "赛后合影",
             "cover": "",
             "layout": "split",
-            "id": "evt_kwzi97gfmtadxxgl"
+            "id": "evt_rtom3b95mtadzv0f"
           }
         ]
       },
@@ -181,7 +181,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_voefmc2wmtadxxgl"
+            "id": "evt_n5eo9smqmtadzv0f"
           }
         ]
       },
@@ -202,7 +202,7 @@
             "caption": "2026·迎新",
             "cover": "images/5fb7e76583f327e7b1d646bbceb99a5b.jpg",
             "layout": "",
-            "id": "evt_bzdmf078mtadxxgl"
+            "id": "evt_dshykszrmtadzv0f"
           }
         ]
       },
@@ -218,7 +218,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_ul0of906mtadxxgl"
+            "id": "evt_7gqhnfrwmtadzv0f"
           }
         ]
       },
@@ -234,7 +234,7 @@
             "caption": "",
             "cover": "",
             "layout": "",
-            "id": "evt_unio864fmtadxxgl"
+            "id": "evt_jjhtgnwjmtadzv0f"
           }
         ]
       }
