@@ -103,11 +103,13 @@
         "desc": "GPA · 核心课程 · 荣誉",
         "events": [
           {
-            "title": "示例学业记录",
-            "desc": "待补充 —— 这里放学业相关的具体事件图文介绍。",
-            "imgs": [],
-            "caption": "",
-            "cover": "",
+            "title": "有耕耘，有收获",
+            "desc": "大一上学位学分绩排位为16/211",
+            "imgs": [
+              "images/938bdd80cc92c1106e1b4933d4e482ce.jpg.jpg"
+            ],
+            "caption": "大一上排位",
+            "cover": "images/938bdd80cc92c1106e1b4933d4e482ce.jpg.jpg",
             "layout": "",
             "id": "evt_ll2nczy7mt8ljx8x"
           }
