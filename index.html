@@ -703,7 +703,7 @@ function renderContentPage(pageKey) {
         ${isEditMode() ? `<button type="button" class="grid-add" data-edit-action="add" data-page="${pageKey}" data-section="${section.id}">＋ 新增事件</button>` : ''}
         <div class="photo-grid">
           ${section.events.map((e, i) => {
-            const thumb = e.cover || e.imgs[0];
+            const thumb = e.cover;
             const card = `
             <button class="photo-card" data-event="${i}">
               <span class="photo-thumb">${thumb ? `<img src="${thumb}" alt="${e.title}">` : '待补充图片'}</span>
@@ -728,10 +728,12 @@ function renderContentPage(pageKey) {
     const event = section.events[vs.eventIndex];
 
     let imagesHtml = '';
-    if (event.imgs.length === 1) {
-      imagesHtml = `<div class="event-image"><img src="${event.imgs[0]}" alt="${event.title}"></div>`;
-    } else if (event.imgs.length > 1) {
-      imagesHtml = `<div class="event-images">${event.imgs.map(img => `<div class="event-image"><img src="${img}" alt="${event.title}"></div>`).join('')}</div>`;
+    // 封面只用于网格缩略图，不应出现在详情内部图里；旧数据可能把封面同时存进了 imgs[0]，这里过滤掉
+    const detailImgs = event.imgs.filter(function (img) { return img !== event.cover; });
+    if (detailImgs.length === 1) {
+      imagesHtml = `<div class="event-image"><img src="${detailImgs[0]}" alt="${event.title}"></div>`;
+    } else if (detailImgs.length > 1) {
+      imagesHtml = `<div class="event-images">${detailImgs.map(img => `<div class="event-image"><img src="${img}" alt="${event.title}"></div>`).join('')}</div>`;
     } else {
       imagesHtml = `<div class="event-image">待补充图片</div>`;
     }
@@ -848,7 +850,11 @@ if (window.scrollY > 100) {
     <h3 id="eventModalTitle">事件</h3>
     <label>标题</label><input type="text" id="evTitle">
     <label>描述</label><textarea id="evDesc"></textarea>
-    <label>图片</label>
+    <label>封面（仅作为事件封面展示）</label>
+    <div id="evCover"></div>
+    <button type="button" id="evAddCover">＋ 上传封面</button>
+    <input type="file" id="evCoverFile" accept="image/*" hidden>
+    <label>事件图片</label>
     <div id="evImgs"></div>
     <button type="button" id="evAddImg">＋ 上传图片</button>
     <input type="file" id="evImgFile" accept="image/*" multiple hidden>

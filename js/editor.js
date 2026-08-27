@@ -22,6 +22,11 @@ function initEditor() {
     document.getElementById('eventModal').hidden = true;
   });
   document.getElementById('evSave').addEventListener('click', saveEvent);
+  document.getElementById('evAddCover').addEventListener('click', function () {
+    document.getElementById('evCoverFile').click();
+  });
+  document.getElementById('evCoverFile').addEventListener('change', onCoverFileChange);
+  document.getElementById('evCover').addEventListener('click', onCoverPickerClick);
   document.getElementById('evAddImg').addEventListener('click', function () {
     document.getElementById('evImgFile').click();
   });
@@ -101,10 +106,10 @@ function onEditActionClick(e) {
 }
 
 // ===== 表单 =====
-let evModalState = { page: '', sectionId: '', eventId: null, images: [] };
+let evModalState = { page: '', sectionId: '', eventId: null, cover: '', images: [] };
 
 function openEventModal(page, sectionId, eventId) {
-  evModalState = { page: page, sectionId: sectionId, eventId: eventId, images: [] };
+  evModalState = { page: page, sectionId: sectionId, eventId: eventId, cover: '', images: [] };
   const pageData = contentData[page];
   const section = pageData.sections.find(function (s) { return s.id === sectionId; });
   const ev = eventId ? section.events.find(function (e) { return e.id === eventId; }) : null;
@@ -115,39 +120,88 @@ function openEventModal(page, sectionId, eventId) {
   document.getElementById('evCaption').value = ev ? ev.caption : '';
   const layout = (ev && ev.layout) || '';
   document.querySelectorAll('input[name=evLayout]').forEach(function (r) { r.checked = (r.value === layout); });
-  if (ev) evModalState.images = ev.imgs.slice();
+  if (ev) {
+    evModalState.cover = ev.cover || '';
+    evModalState.images = ev.imgs.slice();
+    // 旧数据可能把封面同时存进了 imgs[0]，编辑时剥离，避免下次保存后封面重复出现在详情里
+    if (evModalState.cover && evModalState.images[0] === evModalState.cover) {
+      evModalState.images.shift();
+    }
+  }
   renderImgPicker();
   document.getElementById('eventModal').hidden = false;
 }
 
 function renderImgPicker() {
+  renderCoverPicker();
+  renderImgsPicker();
+}
+
+function renderCoverPicker() {
+  const box = document.getElementById('evCover');
+  box.innerHTML = '';
+  const src = evModalState.cover;
+  if (!src) {
+    const empty = document.createElement('div');
+    empty.className = 'img-name';
+    empty.style.color = 'var(--text-muted)';
+    empty.textContent = '未设置封面';
+    box.appendChild(empty);
+    return;
+  }
+  const label = (src.indexOf('blob:') === 0) ? '新图' : src.split('/').pop();
+  const item = document.createElement('div');
+  item.className = 'img-picker-item';
+  item.innerHTML =
+    '<img src="' + src + '" alt="">' +
+    '<span class="img-name">' + label + '</span>' +
+    '<button type="button" data-act="clear-cover">清除</button>';
+  box.appendChild(item);
+}
+
+function renderImgsPicker() {
   const box = document.getElementById('evImgs');
   box.innerHTML = '';
-  const coverSrc = evModalState.images.length ? evModalState.images[0] : '';
   evModalState.images.forEach(function (src, idx) {
-    const isCover = (src === coverSrc);
     const label = (src.indexOf('blob:') === 0) ? '新图' : src.split('/').pop();
     const item = document.createElement('div');
     item.className = 'img-picker-item';
     item.innerHTML =
       '<img src="' + src + '" alt="">' +
-      '<span class="img-name">' + (isCover ? '[封面] ' : '') + label + '</span>' +
-      '<button type="button" data-idx="' + idx + '" data-act="cover">封面</button>' +
+      '<span class="img-name">' + label + '</span>' +
       '<button type="button" data-idx="' + idx + '" data-act="del">删除</button>';
     box.appendChild(item);
   });
 }
 
+function onCoverPickerClick(e) {
+  const btn = e.target.closest('button[data-act]');
+  if (!btn) return;
+  if (btn.dataset.act === 'clear-cover') {
+    evModalState.cover = '';
+    renderImgPicker();
+  }
+}
+
 function onImgPickerClick(e) {
   const btn = e.target.closest('button[data-act]');
   if (!btn) return;
-  const idx = parseInt(btn.dataset.idx, 10);
-  if (btn.dataset.act === 'cover') {
-    const src = evModalState.images.splice(idx, 1)[0];
-    evModalState.images.unshift(src);
-  } else if (btn.dataset.act === 'del') {
+  if (btn.dataset.act === 'del') {
+    const idx = parseInt(btn.dataset.idx, 10);
     evModalState.images.splice(idx, 1);
+    renderImgPicker();
   }
+}
+
+async function onCoverFileChange(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const blob = await compressImage(file, 1600, 0.8);
+  const name = generateImageName('jpg');
+  const url = URL.createObjectURL(blob);
+  editorPendingImages.push({ name: name, blob: blob, url: url });
+  evModalState.cover = url;
+  e.target.value = '';
   renderImgPicker();
 }
 
@@ -168,20 +222,22 @@ function saveEvent() {
   const title = document.getElementById('evTitle').value.trim();
   if (!title) { alert('标题不能为空'); return; }
 
-  const finalImages = evModalState.images.map(function (src) {
+  function mapToPublished(src) {
     if (src.indexOf('blob:') === 0) {
       const p = editorPendingImages.find(function (x) { return x.url === src; });
-      return p ? 'images/' + p.name + '.jpg' : src;
+      return p ? 'images/' + p.name : src;
     }
     return src;
-  });
+  }
+  const finalImages = evModalState.images.map(mapToPublished);
+  const finalCover = evModalState.cover ? mapToPublished(evModalState.cover) : '';
 
   const patch = {
     title: title,
     desc: document.getElementById('evDesc').value,
     imgs: finalImages,
     caption: document.getElementById('evCaption').value,
-    cover: finalImages[0] || '',
+    cover: finalCover,
     layout: document.querySelector('input[name=evLayout]:checked').value,
   };
 
@@ -215,7 +271,7 @@ async function publish() {
     const addImages = [];
     for (const p of editorPendingImages) {
       const base64 = await blobToBase64(p.blob);
-      addImages.push({ path: 'images/' + p.name + '.jpg', base64: base64 });
+      addImages.push({ path: 'images/' + p.name, base64: base64 });
     }
     const client = new GitHubClient({ token: editor.token, owner: editor.owner, repo: editor.repo, branch: editor.branch });
     const removeImages = await computeRemovedImages(client);
@@ -244,11 +300,17 @@ async function computeRemovedImages(client) {
     const oldData = JSON.parse(base64ToUtf8(cur.content));
     const oldImgs = new Set();
     Object.values(oldData).forEach(function (p) {
-      p.sections.forEach(function (s) { s.events.forEach(function (e) { e.imgs.forEach(function (i) { oldImgs.add(i); }); }); });
+      p.sections.forEach(function (s) { s.events.forEach(function (e) {
+        if (e.cover) oldImgs.add(e.cover);
+        e.imgs.forEach(function (i) { oldImgs.add(i); });
+      }); });
     });
     const newImgs = new Set();
     Object.values(contentData).forEach(function (p) {
-      p.sections.forEach(function (s) { s.events.forEach(function (e) { e.imgs.forEach(function (i) { newImgs.add(i); }); }); });
+      p.sections.forEach(function (s) { s.events.forEach(function (e) {
+        if (e.cover) newImgs.add(e.cover);
+        e.imgs.forEach(function (i) { newImgs.add(i); });
+      }); });
     });
     return Array.from(oldImgs).filter(function (i) { return !newImgs.has(i); });
   } catch (e) {
