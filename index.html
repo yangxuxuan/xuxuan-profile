@@ -372,7 +372,7 @@ body {
   color: var(--text-muted); font-size: 0.85rem;
   margin-bottom: 1.5rem; overflow: hidden;
 }
-.event-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.event-image img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
 .event-images {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -451,6 +451,23 @@ body.editing .edit-tools { display: flex; }
   display: flex; align-items: center; justify-content: center; z-index: 80;
 }
 [hidden] { display: none !important; }
+
+/* ===== 图片灯箱：点击详情图查看大图 ===== */
+.lightbox {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center; z-index: 200;
+  cursor: zoom-out;
+}
+.lightbox img {
+  max-width: 94vw; max-height: 88vh; object-fit: contain;
+  border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.lightbox-close {
+  position: absolute; top: 16px; right: 22px;
+  background: none; border: none; color: #fff; font-size: 2.2rem;
+  line-height: 1; cursor: pointer; opacity: 0.85; padding: 4px;
+}
+.lightbox-close:hover { opacity: 1; }
 .modal-box {
   background: #fff; border-radius: 14px; padding: 24px;
   width: min(560px, 92vw); max-height: 86vh; overflow: auto;
@@ -802,6 +819,21 @@ function bindContentPage(pageKey) {
       window.scrollTo({ top: 0 });
     });
   });
+
+  // 详情图 → 点击查看大图
+  pageEl.querySelectorAll('.event-image img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src));
+  });
+}
+
+// ===== 图片灯箱 =====
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').hidden = false;
+}
+function closeLightbox() {
+  document.getElementById('lightbox').hidden = true;
+  document.getElementById('lightboxImg').src = '';
 }
 
 // ========== Initial state ==========
@@ -820,6 +852,9 @@ if (window.scrollY > 100) {
   const draft = getDraft();
   if (draft) contentData = draft;
   initEditor();
+  document.getElementById('lightbox').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
   if (state.currentPage === 'highschool' || state.currentPage === 'university') {
     renderContentPage(state.currentPage);
   }
@@ -843,6 +878,11 @@ if (window.scrollY > 100) {
       <button id="tokenSaveBtn" class="primary">解锁</button>
     </div>
   </div>
+</div>
+
+<div id="lightbox" class="lightbox" hidden>
+  <button type="button" class="lightbox-close" id="lightboxClose" aria-label="关闭">×</button>
+  <img id="lightboxImg" src="" alt="">
 </div>
 
 <div id="eventModal" class="modal" hidden>
