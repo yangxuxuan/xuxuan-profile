@@ -95,17 +95,7 @@
         "id": "uni-research",
         "name": "科研/论文",
         "desc": "课题 · 方向 · 成果",
-        "events": [
-          {
-            "title": "示例科研项目",
-            "desc": "待补充 —— 这里放科研相关的具体事件图文介绍。",
-            "imgs": [],
-            "caption": "",
-            "cover": "",
-            "layout": "",
-            "id": "evt_9oln62vomt8ljx8x"
-          }
-        ]
+        "events": []
       },
       {
         "id": "uni-grades",
