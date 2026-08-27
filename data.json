@@ -89,26 +89,7 @@
         "id": "uni-internship",
         "name": "实习经历",
         "desc": "公司 · 岗位 · 收获",
-        "events": [
-          {
-            "title": "示例实习经历",
-            "desc": "待补充 —— 这里放实习相关的具体事件图文介绍。",
-            "imgs": [],
-            "caption": "",
-            "cover": "",
-            "layout": "",
-            "id": "evt_r5unxq16mt8ljx8x"
-          },
-          {
-            "title": "示例实习经历",
-            "desc": "待补充 —— 这里放实习相关的具体事件图文介绍。",
-            "imgs": [],
-            "caption": "",
-            "cover": "",
-            "layout": "",
-            "id": "evt_3rht61b4mt8ljx8x"
-          }
-        ]
+        "events": []
       },
       {
         "id": "uni-research",
