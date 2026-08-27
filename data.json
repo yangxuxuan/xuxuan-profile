@@ -50,11 +50,13 @@
         "desc": "比赛 · 队友 · 校园",
         "events": [
           {
-            "title": "示例足球事件",
-            "desc": "待补充 —— 这里放足球相关的具体事件图文介绍。",
-            "imgs": [],
-            "caption": "",
-            "cover": "",
+            "title": "班赛",
+            "desc": "高二(1)班与高三(1)班组织的班赛活动",
+            "imgs": [
+              "images/d7e7ad0b4529d75ce4b10da0cf3037eb.jpg.jpg"
+            ],
+            "caption": "班赛",
+            "cover": "images/d7e7ad0b4529d75ce4b10da0cf3037eb.jpg.jpg",
             "layout": "",
             "id": "evt_nx38kpxkmt8ljx8x"
           }
